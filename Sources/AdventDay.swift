@@ -1,5 +1,5 @@
-@_exported import Algorithms
-@_exported import Collections
+// @_exported import Algorithms
+// @_exported import Collections
 import Foundation
 
 protocol AdventDay {
@@ -54,18 +54,20 @@ extension AdventDay {
   static func loadData(challengeDay: Int) -> String {
     let dayString = String(format: "%02d", challengeDay)
     let dataFilename = "Day\(dayString)"
-    let dataURL = Bundle.module.url(
-      forResource: dataFilename,
-      withExtension: "txt",
-      subdirectory: "Data")
+    // let dataURL = Bundle.module.url(
+    //   forResource: dataFilename,
+    //   withExtension: "txt",
+    //   subdirectory: "Data")
+    log("Path: \(FileManager.default.currentDirectoryPath)")
+    let dataURL = URL(fileURLWithPath: "/Users/stevenhepting/workspace/swift-advent/Sources/Data/\(dataFilename).txt")
 
-    guard let dataURL,
-      let data = try? String(contentsOf: dataURL)
+
+    guard let data = try? String(contentsOf: dataURL)
     else {
       fatalError("Couldn't find file '\(dataFilename).txt' in the 'Data' directory.")
     }
 
-    // On Windows, line separators may be CRLF. Converting to LF so that \n 
+    // On Windows, line separators may be CRLF. Converting to LF so that \n
     // works for string parsing.
     return data.replacingOccurrences(of: "\r", with: "")
   }

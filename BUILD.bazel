@@ -1,0 +1,53 @@
+load("@build_bazel_rules_apple//apple:macos.bzl", "macos_command_line_application")
+load("@build_bazel_rules_apple//apple:versioning.bzl", "apple_bundle_version")
+load("@build_bazel_rules_swift//swift:swift.bzl", "swift_library")
+
+
+swift_library(
+    name = "AdventOfCode",
+    srcs = glob(["Sources/*.swift"]),
+    deps = [
+        ":ArgumentParser",
+    ],
+)
+
+apple_bundle_version(
+    name = "CommandLineVersion",
+    build_version = "1.0",
+)
+
+filegroup(
+    name = "test_files",
+    srcs = ["Sources/Data/Day00.txt",
+    ],
+)
+
+macos_command_line_application(
+    name = "SwiftAdvent",
+    bundle_id = "com.advent.SwiftAdvent",
+    # infoplists = [":Info.plist"],
+    minimum_os_version = "14",
+    version = ":CommandLineVersion",
+    deps = [":AdventOfCode",":test_files"],
+)
+
+# Deps
+
+swift_library(
+    name = "ArgumentParser",
+    srcs = glob([".build/checkouts/swift-argument-parser/Sources/ArgumentParser/**/*.swift"]),
+    deps = [":ArgumentParserToolInfo"]
+)
+
+swift_library(
+    name = "ArgumentParserToolInfo",
+    srcs = glob([".build/checkouts/swift-argument-parser/Sources/ArgumentParserToolInfo/*.swift"]),
+)
+
+swift_library(
+    name = "Algorithms",
+    srcs = glob([".build/checkouts/swift-argument-parser/Sources/ArgumentParser/**/*.swift"]),
+    deps = [":ArgumentParserToolInfo"]
+)
+
+
